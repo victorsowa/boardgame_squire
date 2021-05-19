@@ -14,7 +14,29 @@ body {
     text-align: center;
 }
 
-.hero h1 {
-    font-size: 24px;
-    margin-bottom: 30px;
+    .hero h1 {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+
+.game-container {
+    background-color: lightgray;
+    margin-top: 5px;
+    height: 100px;
+    position: relative;
 }
+
+    .game-container img {
+            display: inline-block;
+            width:100px;
+            height:100px;
+        }
+
+    div.game-info {
+        display: inline-block;
+        position: absolute;
+        left: 110px;
+        height: 90px;
+        top: 0;
+        width:calc(100% - 120px);
+    }

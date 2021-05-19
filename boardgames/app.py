@@ -7,6 +7,7 @@ folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, folder)
 
 import boardgames.data.db_session as db_session
+import boardgames.services.filtered_games_service as fgs
 
 app = flask.Flask(__name__)
 
@@ -21,7 +22,7 @@ def setup_db():
         os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             'db',
-            'boardgames.sqlite'
+            'db.sqlite'
         )
     )
     print(db_file)
@@ -30,7 +31,7 @@ def setup_db():
 
 @app.route('/', methods=['GET'])
 def index_get():
-    return flask.render_template('index.html')
+    return flask.render_template('index.html', images=fgs.get_games())
 
 
 if __name__ == '__main__':

@@ -1,3 +1,10 @@
-import pypi_org.data.db_session as db_session
+import pandas as pd
 
-def get_users_games():
+import boardgames.data.db_session as db_session
+from boardgames.data.games import Game
+
+def get_games():
+    session = db_session.create_session()
+    query = session.query(Game.thumbnail_url, Game.title, Game.year_published)
+    #return pd.read_sql(query.statement, query.session.bind)
+    return query.all()
