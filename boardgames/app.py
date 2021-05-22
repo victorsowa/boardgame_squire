@@ -8,7 +8,7 @@ sys.path.insert(0, folder)
 
 import boardgames.data.db_session as db_session
 import boardgames.services.filtered_games_service as fgs
-from boardgames.services.collection_service import add_new_users_collection_to_db
+from boardgames.services.collection_service import add_new_users_collection_to_db, check_user_in_database
 
 app = flask.Flask(__name__)
 
@@ -34,17 +34,18 @@ def setup_db():
 def index_get():
     return flask.render_template('index.html')
 
+
 @app.route('/', methods=['POST'])
 def index_post():
     username = flask.request.form['username']
+    if not check_user_in_database(username):
+        add_new_users_collection_to_db(username)
     return flask.redirect(f'/user_collection/{username}')
 
 
 @app.route('/user_collection/<username>', methods=['GET'])
 def collection_get(username):
     return flask.render_template('user_collection.html', images=fgs.get_games(username))
-
-
 
 
 if __name__ == '__main__':
