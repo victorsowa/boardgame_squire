@@ -8,12 +8,14 @@ sys.path.insert(0, folder)
 
 import boardgames.data.db_session as db_session
 import boardgames.services.filtered_games_service as fgs
+from boardgames.services.collection_service import add_new_users_collection_to_db
 
 app = flask.Flask(__name__)
 
 
 def main():
     setup_db()
+    add_new_users_collection_to_db('bobbaganush')
     app.run(debug=True)
 
 
@@ -31,7 +33,15 @@ def setup_db():
 
 @app.route('/', methods=['GET'])
 def index_get():
-    return flask.render_template('index.html', images=fgs.get_games())
+    return flask.render_template('index.html')
+
+
+@app.route('/user_collection/<username>', methods=['GET'])
+def index_get():
+    return flask.render_template('user_collection.html', images=fgs.get_games())
+
+
+
 
 
 if __name__ == '__main__':

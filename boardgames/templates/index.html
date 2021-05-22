@@ -3,28 +3,8 @@
     <div class="hero">
         <div class="hero-inner">
             <h1> Boardgame collection </h1>
-            <input type="text" placeholder="bobbaganush" class="form-control">
+            <input type="text" class="form-control">
         </div>
-    </div>
-
-    <div class="container project-list">
-        {% for game in images %}
-        <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-6">
-
-                    <div class="game-container">
-                        <div class="thumbnail">
-                            <img src={{game.thumbnail_url}} alt="">
-                        </div>
-                        <div class="game-info">
-                            <div class="game-title">{{game.title}}</div>
-                        </div>
-                    </div>
-            </div>
-            <div class="col-sm-3"></div>
-        </div>
-        {% endfor %}
     </div>
 
 {% endblock %}
