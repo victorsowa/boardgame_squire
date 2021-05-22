@@ -4,7 +4,7 @@ from boardgames.data.modelbase import SqlAlchemyBase
 
 
 class Game(SqlAlchemyBase):
-    __tablename__ = 'games'
+    __tablename__ = "games"
     id = Column(Integer, primary_key=True)
     bgg_game_id = Column(Integer, nullable=False, unique=True)
     title = Column(String, nullable=False)

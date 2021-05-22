@@ -40,3 +40,7 @@ body {
         top: 0;
         width:calc(100% - 120px);
     }
+
+.collection-list {
+    background-color: white;
+}
