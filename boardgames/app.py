@@ -15,7 +15,6 @@ app = flask.Flask(__name__)
 
 def main():
     setup_db()
-    add_new_users_collection_to_db('bobbaganush')
     app.run(debug=True)
 
 
@@ -37,8 +36,8 @@ def index_get():
 
 
 @app.route('/user_collection/<username>', methods=['GET'])
-def index_get():
-    return flask.render_template('user_collection.html', images=fgs.get_games())
+def collection_get(username):
+    return flask.render_template('user_collection.html', images=fgs.get_games(username))
 
 
 
