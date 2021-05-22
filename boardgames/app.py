@@ -34,11 +34,15 @@ def setup_db():
 def index_get():
     return flask.render_template('index.html')
 
+@app.route('/', methods=['POST'])
+def index_post():
+    username = flask.request.form['username']
+    return flask.redirect(f'/user_collection/{username}')
+
 
 @app.route('/user_collection/<username>', methods=['GET'])
 def collection_get(username):
     return flask.render_template('user_collection.html', images=fgs.get_games(username))
-
 
 
 
