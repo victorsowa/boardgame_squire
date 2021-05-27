@@ -1,4 +1,4 @@
-flask
-sqlalchemy
-requests
-pandas
+Flask==2.0.0
+SQLAlchemy==1.4.15
+requests==2.25.1
+pandas==1.2.4
