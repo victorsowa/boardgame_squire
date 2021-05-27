@@ -61,8 +61,9 @@ def collection_post(username):
         player_count_filter_type=flask.request.form["player_count_filter_type"],
         min_playing_time=flask.request.form["min_playing_time"],
         max_playing_time=flask.request.form["max_playing_time"],
+        include_expansions=flask.request.form.get("include_expansions", False)
     )
-    print(filters.player_count, filters.player_count_filter_type)
+
     return flask.render_template(
         "user_collection.html",
         images=fgs.get_games(username, filters),
