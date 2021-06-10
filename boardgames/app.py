@@ -17,8 +17,13 @@ app = flask.Flask(__name__)
 
 
 def main():
-    setup_db()
+    configure()
     app.run(debug=True)
+
+
+def configure():
+    print('Setting up db')
+    setup_db()
 
 
 def setup_db():
@@ -75,3 +80,5 @@ def collection_post(username):
 if __name__ == "__main__":
     # DEBUG is SET to TRUE. CHANGE FOR PROD
     main()
+else:
+    configure()
