@@ -15,7 +15,7 @@ def global_init(db_file: str):
     if not db_file or not db_file.strip():
         raise Exception("You must specify a db file.")
 
-    conn_str = "sqlite:///" + db_file.strip()
+    conn_str = "sqlite://" + db_file.strip()
     print("Connecting to DB with {}".format(conn_str))
 
     engine = sa.create_engine(
