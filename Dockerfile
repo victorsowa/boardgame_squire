@@ -7,9 +7,10 @@ RUN apt-get -y install nginx \
     && apt-get -y install python3-dev \
     && apt-get -y install build-essential
 
-
 COPY . /srv/boardgames
 WORKDIR /srv/boardgames/boardgames
+
+RUN chown www-data db
 
 RUN pip install -r ../requirements.txt --src /usr/local/src
 
