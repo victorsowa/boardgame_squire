@@ -2,6 +2,7 @@ import sys
 import os
 
 import flask
+import jinja_partials
 
 folder = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, folder)
@@ -14,6 +15,7 @@ from boardgames.services.collection_service import (
 )
 
 app = flask.Flask(__name__)
+jinja_partials.register_extensions(app)
 
 
 def main():
@@ -60,7 +62,6 @@ def collection_get(username):
 
 @app.route("/user_collection/<username>", methods=["POST"])
 def collection_post(username):
-    print("########POSTING########")
     filters = fgs.GameCollectionFilters(
         player_count=flask.request.form["player_count"],
         player_count_filter_type=flask.request.form["player_count_filter_type"],
@@ -70,10 +71,7 @@ def collection_post(username):
     )
 
     return flask.render_template(
-        "user_collection.html",
-        images=fgs.get_games(username, filters),
-        username=username,
-        filters=filters,
+        "shared/partials/games_list.html", images=fgs.get_games(username, filters)
     )
 
 
