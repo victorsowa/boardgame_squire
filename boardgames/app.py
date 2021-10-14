@@ -57,14 +57,13 @@ def collection_get(username):
 
 @app.route("/user_collection/<username>", methods=["POST"])
 def collection_post(username):
-    print("########POSTING########")
     filters = fgs.GameCollectionFilters(
         player_count=flask.request.form["player_count"],
         player_count_filter_type=flask.request.form["player_count_filter_type"],
         min_playing_time=flask.request.form["min_playing_time"],
         max_playing_time=flask.request.form["max_playing_time"],
     )
-    print(filters.player_count, filters.player_count_filter_type)
+
     return flask.render_template(
         "shared/partials/games_list.html", images=fgs.get_games(username, filters)
     )
