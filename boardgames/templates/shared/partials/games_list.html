@@ -1,8 +1,19 @@
-<div class="game-container">
-    <div class="thumbnail">
-        <img src={{game.thumbnail_url}} alt="">
+<div class="container collection-list">
+    {% for game in images %}
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="game-container">
+                <div class="thumbnail">
+                    <img src={{game.thumbnail_url}} alt="">
+                </div>
+                <div class="game-info">
+                    <div class="game-title">{{game.title}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
     </div>
-    <div class="game-info">
-        <div class="game-title">{{game.title}}</div>
-    </div>
+    {% endfor %}
 </div>
+
