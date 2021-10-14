@@ -2,6 +2,7 @@ import sys
 import os
 
 import flask
+import jinja_partials
 
 folder = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, folder)
@@ -14,7 +15,7 @@ from boardgames.services.collection_service import (
 )
 
 app = flask.Flask(__name__)
-
+jinja_partials.register_extensions(app)
 
 def main():
     setup_db()
