@@ -17,6 +17,7 @@ from boardgames.services.collection_service import (
 app = flask.Flask(__name__)
 jinja_partials.register_extensions(app)
 
+
 def main():
     setup_db()
     app.run(debug=True)
@@ -65,8 +66,7 @@ def collection_post(username):
     )
     print(filters.player_count, filters.player_count_filter_type)
     return flask.render_template(
-        "shared/partials/games_list.html",
-        images=fgs.get_games(username, filters)
+        "shared/partials/games_list.html", images=fgs.get_games(username, filters)
     )
 
 
