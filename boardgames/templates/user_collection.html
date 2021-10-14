@@ -59,6 +59,18 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="autoSizingCheck" name="include_expansions" {% if filters.include_expansions %} checked {% endif %}>
+                                <label class="form-check-label" for="autoSizingCheck">
+                                    Include Expansions
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-row">
                         <button hx-post="/user_collection/{{username}}"
                                 hx-target=".games_list"

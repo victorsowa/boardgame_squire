@@ -14,6 +14,7 @@ GameCollectionFilters = namedtuple(
         "player_count_filter_type",
         "min_playing_time",
         "max_playing_time",
+        "include_expansions",
     ],
 )
 
@@ -23,6 +24,7 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     player_count_filter_type="Possible",
     min_playing_time="Any",
     max_playing_time="Any",
+    include_expansions=False
 )
 
 
@@ -49,6 +51,7 @@ def apply_filters_to_get_games(query, filters):
         apply_player_count_filter,
         apply_min_playing_time_filter,
         apply_max_playing_time_filter,
+        apply_expansion_filter,
     ]
 
     for filter_function in filter_functions:
@@ -85,3 +88,10 @@ def apply_max_playing_time_filter(query, filters):
     if filters.min_playing_time == DEFAULT_COLLECTION_FILTERS.max_playing_time:
         return query
     return query.filter(Game.max_playing_time <= filters.max_playing_time)
+
+
+def apply_expansion_filter(query, filters):
+    if not filters.include_expansions:
+        return query.filter(Game.type != 'boardgameexpansion')
+    else:
+        return query
