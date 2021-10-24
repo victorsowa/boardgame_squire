@@ -85,7 +85,7 @@ def apply_min_playing_time_filter(query, filters):
 
 
 def apply_max_playing_time_filter(query, filters):
-    if filters.min_playing_time == DEFAULT_COLLECTION_FILTERS.max_playing_time:
+    if filters.max_playing_time == DEFAULT_COLLECTION_FILTERS.max_playing_time:
         return query
     return query.filter(Game.max_playing_time <= filters.max_playing_time)
 
