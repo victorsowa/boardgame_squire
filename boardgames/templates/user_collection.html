@@ -16,7 +16,11 @@
                             <div class="form-group col-sm-6">
                                 <div class="player-count-multiselect">
                                     <label for="Player Count">Player Count</label>
-                                    <select class="custom-select", name="player_count">
+                                    <select hx-post="/user_collection/{{username}}"
+                                            hx-target=".games_list"
+                                            hx-trigger="change"
+                                            class="custom-select"
+                                            name="player_count">
                                         <option selected>{{filters.player_count}}</option>
                                         <option>Any</option>
                                         {% for player_count in range(1, 12)%}
@@ -27,7 +31,14 @@
                                 <div class="player-count-radio">
                                     {% for player_count_filter_type in ['Possible', 'Recommended', 'Best'] %}
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="player_count_filter_type" id="player_count_type_{{player_count_filter_type}}" value="{{player_count_filter_type}}" {% if filters.player_count_filter_type == player_count_filter_type %} checked {% endif %}>
+                                        <input hx-post="/user_collection/{{username}}"
+                                               hx-target=".games_list"
+                                               hx-trigger="change"
+                                               class="form-check-input"
+                                               type="radio"
+                                               name="player_count_filter_type"
+                                               id="player_count_type_{{player_count_filter_type}}"
+                                               value="{{player_count_filter_type}}" {% if filters.player_count_filter_type == player_count_filter_type %} checked {% endif %}>
                                         <label class="form-check-label" for="player_count_type_{{player_count_filter_type}}">
                                             {{player_count_filter_type}}
                                         </label>
@@ -40,7 +51,11 @@
 
                         <div class="form-group col-sm-3">
                             <label for="min_playing_time">Min Playing Time</label>
-                            <select class="custom-select", name="min_playing_time">
+                            <select hx-post="/user_collection/{{username}}"
+                                    hx-target=".games_list"
+                                    hx-trigger="change"
+                                    class="custom-select"
+                                    name="min_playing_time">
                                 <option selected>{{filters.min_playing_time}}</option>
                                 <option>Any</option>
                                 {% for playing_time in range(15, 300, 15)%}
@@ -50,7 +65,11 @@
                         </div>
                         <div class="form-group col-sm-3">
                             <label for="max_playing_time">Max Playing Time</label>
-                            <select class="custom-select", name="max_playing_time">
+                            <select hx-post="/user_collection/{{username}}"
+                                    hx-target=".games_list"
+                                    hx-trigger="change"
+                                    class="custom-select"
+                                    name="max_playing_time">
                                 <option selected>{{filters.max_playing_time}}</option>
                                 <option >Any</option>
                                 {% for playing_time in range(15, 300, 15)%}
@@ -63,18 +82,18 @@
                     <div class="form-row">
                         <div class="form-group col-sm-4">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck" name="include_expansions" {% if filters.include_expansions %} checked {% endif %}>
+                                <input hx-post="/user_collection/{{username}}"
+                                       hx-target=".games_list"
+                                       hx-trigger="change"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       id="autoSizingCheck"
+                                       name="include_expansions" {% if filters.include_expansions %} checked {% endif %}>
                                 <label class="form-check-label" for="autoSizingCheck">
                                     Include Expansions
                                 </label>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-row">
-                        <button hx-post="/user_collection/{{username}}"
-                                hx-target=".games_list"
-                                class="btn btn-success">Filter</button>
                     </div>
 
                     </form>
