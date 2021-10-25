@@ -22,24 +22,23 @@ body {
 .game-container {
     background-color: lightgray;
     margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
     height: 100px;
-    position: relative;
 }
 
-    .game-container img {
-            display: inline-block;
-            width:100px;
-            height:100px;
-        }
-
-    div.game-info {
-        display: inline-block;
-        position: absolute;
-        left: 110px;
-        height: 90px;
-        top: 0;
-        width:calc(100% - 120px);
-    }
+.thumbnail {
+    margin: 0px;
+    padding: 0px;
+}
+.thumbnail img{
+    float: left;
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-right: 10px;
+    height: 100px;
+    width: 100px;
+}
 
 .collection-list {
     background-color: white;
