@@ -20,7 +20,7 @@ jinja_partials.register_extensions(app)
 
 def main():
     configure()
-    app.run(debug=True)
+    app.run()
 
 
 def configure():
