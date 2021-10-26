@@ -38,7 +38,18 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
     user_id = get_user_id_from_username(username)
     base_query = (
         session.query(
-            Game.thumbnail_url, Game.title, Game.year_published, Game.description
+            Game.thumbnail_url,
+            Game.title,
+            Game.year_published,
+            Game.description,
+            Game.min_players,
+            Game.max_players,
+            Game.min_playing_time,
+            Game.max_playing_time,
+            Game.average_rating,
+            Game.board_game_rank,
+            Game.user_suggested_best_number_of_players,
+            Game.user_suggested_recommended_number_of_players,
         )
         .join(UserGame, UserGame.bgg_game_id == Game.bgg_game_id)
         .filter(UserGame.user_id == user_id)
