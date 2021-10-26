@@ -1,5 +1,6 @@
 import time
 import xml.etree.ElementTree as ET
+import html
 
 import pandas as pd
 import requests
@@ -52,7 +53,9 @@ class BoardgameXMLParser:
         self.type = self.board_game_element.get("type")
         self.id = self.board_game_element.get("id")
         self.title = self._get_attribute_from_element('name[@type="primary"]', "value")
-        self.description = self.board_game_element.find("description").text
+        self.description = html.unescape(
+            self.board_game_element.find("description").text
+        )
         self.image = self.board_game_element.find("image").text
         self.thumbnail = self.board_game_element.find("thumbnail").text
         self.year_published = self._get_attribute_from_element("yearpublished", "value")
