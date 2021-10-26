@@ -1,18 +1,41 @@
 <div class="container collection-list">
     {% for game in images %}
     <div class="row game-row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
             <div class="game-container">
                 <div class="thumbnail">
                     <img src={{game.thumbnail_url}} alt="">
                 </div>
                 <div class="game-info">
                     <div class="game-title game-info-item">{{game.title}}</div>
+                    <div class="container allways-game-info">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-8">
+                                <div class="possible-players game-info-item">{{game.min_players}} - {{game.max_players}} Players</div>
+                                <div class="recommended-best-players game-info-item">
+                                    Recommended: {{game.user_suggested_recommended_number_of_players | replace('|', ',')}}
+                                    Best: {{game.user_suggested_best_number_of_players | replace('|', ',')}}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-xs-4">
+                                <div class="playing-time-value game-info-item">
+                                    {{game.min_playing_time}} Min
+                                </div>
+                                <div class="playing-time game-info-item">
+                                    Playing Time
+                                </div>
+                            </div>
+                            <div class="visible-xs clearfix"></div>
+                            <div class="col-sm-4 col-xs-6">
+                                <div class="weight game-info-item">TODO</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-1"></div>
     </div>
     {% endfor %}
 </div>
