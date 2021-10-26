@@ -24,7 +24,7 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     player_count_filter_type="Possible",
     min_playing_time="Any",
     max_playing_time="Any",
-    include_expansions=False
+    include_expansions=False,
 )
 
 
@@ -37,7 +37,9 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
     session = db_session.create_session()
     user_id = get_user_id_from_username(username)
     base_query = (
-        session.query(Game.thumbnail_url, Game.title, Game.year_published)
+        session.query(
+            Game.thumbnail_url, Game.title, Game.year_published, Game.description
+        )
         .join(UserGame, UserGame.bgg_game_id == Game.bgg_game_id)
         .filter(UserGame.user_id == user_id)
     )
@@ -92,6 +94,6 @@ def apply_max_playing_time_filter(query, filters):
 
 def apply_expansion_filter(query, filters):
     if not filters.include_expansions:
-        return query.filter(Game.type != 'boardgameexpansion')
+        return query.filter(Game.type != "boardgameexpansion")
     else:
         return query
