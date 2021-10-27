@@ -95,6 +95,7 @@ class BoardgameXMLParser:
         if suggested_players_total_votes == 0:
             self.user_suggested_best_number_of_players = ""
             self.user_suggested_recommended_number_of_players = ""
+            self.user_suggested_recommended_not_best_number_of_players = ""
         else:
             suggested_player_counts_df = self._get_suggested_player_counts_dataframe(
                 suggested_player_poll_element
@@ -109,6 +110,11 @@ class BoardgameXMLParser:
             )
             self.user_suggested_recommended_number_of_players = (
                 self._get_recommended_player_counts(
+                    suggested_player_counts_df_with_poll_result
+                )
+            )
+            self.user_suggested_recommended_not_best_number_of_players = (
+                self._get_recommended_player_not_best_counts(
                     suggested_player_counts_df_with_poll_result
                 )
             )
@@ -168,6 +174,12 @@ class BoardgameXMLParser:
     def _get_recommended_player_counts(self, poll_result):
         recommended_player_counts = poll_result.loc[
             poll_result["poll_result"] != "not_recommended", "num_players"
+        ].tolist()
+        return "|".join(recommended_player_counts)
+
+    def _get_recommended_player_not_best_counts(self, poll_result):
+        recommended_player_counts = poll_result.loc[
+            poll_result["poll_result"] == "recommended", "num_players"
         ].tolist()
         return "|".join(recommended_player_counts)
 
@@ -286,6 +298,7 @@ def insert_board_game_info(list_of_boardgame_objects):
                 categories=bg.categories,
                 user_suggested_best_number_of_players=bg.user_suggested_best_number_of_players,
                 user_suggested_recommended_number_of_players=bg.user_suggested_recommended_number_of_players,
+                user_suggested_recommended_not_best_number_of_players=bg.user_suggested_recommended_not_best_number_of_players,
             )
             games_to_be_inserted.append(bg_sql)
         else:

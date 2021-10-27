@@ -27,3 +27,6 @@ class Game(SqlAlchemyBase):
     categories = Column(String, nullable=False)
     user_suggested_best_number_of_players = Column(String, nullable=False)
     user_suggested_recommended_number_of_players = Column(String, nullable=False)
+    user_suggested_recommended_not_best_number_of_players = Column(
+        String, nullable=False
+    )

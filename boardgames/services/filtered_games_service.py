@@ -50,6 +50,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
             Game.board_game_rank,
             Game.user_suggested_best_number_of_players,
             Game.user_suggested_recommended_number_of_players,
+            Game.user_suggested_recommended_not_best_number_of_players,
         )
         .join(UserGame, UserGame.bgg_game_id == Game.bgg_game_id)
         .filter(UserGame.user_id == user_id)
