@@ -27,25 +27,30 @@ body {
     min-height: 100px;
 }
 
-.game-info .description {
-    white-space: pre-line;
+.game-title {
+    width: calc(65%);
+    font-weight: bold;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.game-title {
-    padding-left: 15px;
-    font-size: large;
-    font-weight: bold;
+.allways-game-info-container {
+    margin-top: 10px;
 }
 
 .allways-game-info {
-    margin-top: 20px;
+    margin-right: 5px;
+}
+
+@media (min-width: 768px) {
+    .allways-game-info{
+        margin-right: 20px;
+    }
 }
 
 .recommended-best-players {
-    font-size: small;
-}
-
-.playing-time {
     font-size: small;
 }
 
@@ -54,7 +59,7 @@ body {
     padding: 0px;
 }
 
-/* xs*/
+/* xs
 .thumbnail img {
     margin-left: 0px;
     padding-left: 0px;
@@ -62,17 +67,21 @@ body {
     height: 10;
 
 }
+*/
 
-/* sm and above*/
+/* sm and above
 @media (min-width: 768px) {
-    .thumbnail img{
-        float: left;
-        margin-left: 0px;
-        padding-left: 0px;
-        margin-right: 10px;
-        height: 100px;
-        width: 100px;
-    }
+
+}
+*/
+
+.thumbnail img{
+    float: left;
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-right: 10px;
+    height: 100px;
+    width: 100px;
 }
 
 

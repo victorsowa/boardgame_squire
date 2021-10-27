@@ -8,26 +8,22 @@
                     <img src={{game.thumbnail_url}} alt="">
                 </div>
                 <div class="game-info">
-                    <div class="game-title game-info-item">{{game.title}}</div>
-                    <div class="container allways-game-info">
+                    <div class="game-title game-info-item text-truncate">{{game.title}}</div>
+                    <div class="container allways-game-info-container">
                         <div class="row">
-                            <div class="col-sm-4 col-xs-8">
+                            <div class="col-xs-4 allways-game-info">
                                 <div class="possible-players game-info-item">{{game.min_players}} - {{game.max_players}} Players</div>
                                 <div class="recommended-best-players game-info-item">
-                                    Recommended: {{game.user_suggested_recommended_number_of_players | replace('|', ',')}}
                                     Best: {{game.user_suggested_best_number_of_players | replace('|', ',')}}
+                                    Rec: {{game.user_suggested_recommended_not_best_number_of_players | replace('|', ',')}}
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-xs-4">
+                            <div class="col-xs-4 allways-game-info">
                                 <div class="playing-time-value game-info-item">
-                                    {{game.min_playing_time}} Min
-                                </div>
-                                <div class="playing-time game-info-item">
-                                    Playing Time
+                                    {{game.min_playing_time}} - {{game.max_playing_time}} Min
                                 </div>
                             </div>
-                            <div class="visible-xs clearfix"></div>
-                            <div class="col-sm-4 col-xs-6">
+                            <div class="col-xs-4 allways-game-info">
                                 <div class="weight game-info-item">TODO</div>
                             </div>
                         </div>
