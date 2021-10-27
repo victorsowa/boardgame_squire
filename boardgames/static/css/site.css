@@ -22,24 +22,70 @@ body {
 .game-container {
     background-color: lightgray;
     margin-top: 5px;
-    height: 100px;
-    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+    min-height: 100px;
 }
 
-    .game-container img {
-            display: inline-block;
-            width:100px;
-            height:100px;
-        }
+.game-title {
+    width: calc(65%);
+    font-weight: bold;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    div.game-info {
-        display: inline-block;
-        position: absolute;
-        left: 110px;
-        height: 90px;
-        top: 0;
-        width:calc(100% - 120px);
+.allways-game-info-container {
+    margin-top: 10px;
+}
+
+.allways-game-info {
+    margin-right: 5px;
+}
+
+@media (min-width: 768px) {
+    .allways-game-info{
+        margin-right: 20px;
     }
+}
+
+.recommended-best-players {
+    font-size: small;
+}
+
+.thumbnail {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* xs
+.thumbnail img {
+    margin-left: 0px;
+    padding-left: 0px;
+    width: 100%;
+    height: 10;
+
+}
+*/
+
+/* sm and above
+@media (min-width: 768px) {
+
+}
+*/
+
+.thumbnail img{
+    float: left;
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-right: 10px;
+    height: 100px;
+    width: 100px;
+}
+
+
+
 
 .collection-list {
     background-color: white;

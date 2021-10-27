@@ -20,11 +20,11 @@ jinja_partials.register_extensions(app)
 
 def main():
     configure()
-    app.run(debug=True)
+    app.run()
 
 
 def configure():
-    print('Setting up db')
+    print("Setting up db")
     setup_db()
 
 
@@ -67,7 +67,7 @@ def collection_post(username):
         player_count_filter_type=flask.request.form["player_count_filter_type"],
         min_playing_time=flask.request.form["min_playing_time"],
         max_playing_time=flask.request.form["max_playing_time"],
-        include_expansions=flask.request.form.get("include_expansions", False)
+        include_expansions=flask.request.form.get("include_expansions", False),
     )
 
     return flask.render_template(
