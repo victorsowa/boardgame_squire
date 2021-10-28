@@ -53,11 +53,17 @@ class BoardgameXMLParser:
         self.type = self.board_game_element.get("type")
         self.id = self.board_game_element.get("id")
         self.title = self._get_attribute_from_element('name[@type="primary"]', "value")
-        self.description = html.unescape(
-            self.board_game_element.find("description").text
-        )
-        self.image = self.board_game_element.find("image").text
-        self.thumbnail = self.board_game_element.find("thumbnail").text
+
+        try:
+            self.description = html.unescape(
+                self.board_game_element.find("description").text
+            )
+        except TypeError:
+            self.description = None
+
+        self.image = self._get_optional_element("image")
+        self.thumbnail = self._get_optional_element("thumbnail")
+
         self.year_published = self._get_attribute_from_element("yearpublished", "value")
         self.min_players_from_creators = self._get_attribute_from_element(
             "minplayers", "value"
@@ -118,6 +124,12 @@ class BoardgameXMLParser:
                     suggested_player_counts_df_with_poll_result
                 )
             )
+
+    def _get_optional_element(self, element_name):
+        try:
+            return self.board_game_element.find(element_name).text
+        except AttributeError:
+            return None
 
     def _get_attribute_from_element(self, find_string, attribute_name):
         element = self.board_game_element.find(f"{find_string}")
