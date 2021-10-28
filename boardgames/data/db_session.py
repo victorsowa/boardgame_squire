@@ -18,9 +18,7 @@ def global_init(db_file: str):
     conn_str = "sqlite:///" + db_file.strip()
     print("Connecting to DB with {}".format(conn_str))
 
-    engine = sa.create_engine(
-        conn_str, echo=True, connect_args={"check_same_thread": False}
-    )
+    engine = sa.create_engine(conn_str, connect_args={"check_same_thread": False})
     __factory = orm.sessionmaker(bind=engine)
 
     import boardgames.data.__all_models
