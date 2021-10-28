@@ -51,12 +51,8 @@ def index_post():
 
 @app.route("/user_collection/<username>", methods=["GET"])
 def collection_get(username):
-    default_filter_values = fgs.DEFAULT_COLLECTION_FILTERS
     return flask.render_template(
-        "user_collection.html",
-        images=fgs.get_games(username),
-        username=username,
-        filters=default_filter_values,
+        "user_collection.html", images=fgs.get_games(username), username=username
     )
 
 

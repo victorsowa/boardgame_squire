@@ -16,9 +16,7 @@ BASE_URI = "https://www.boardgamegeek.com/xmlapi2/"
 def get_users_collection(username):
     collections_endpoint = BASE_URI + "collection?"
     parameters = f"username={username}&stats=1&own=1"
-    result = requests.get(collections_endpoint + parameters)
-    print(result.text)
-    return result
+    return requests.get(collections_endpoint + parameters)
 
 
 def get_xml_string_from_response(response):
@@ -43,7 +41,6 @@ def get_games_from_game_ids(game_ids):
     comma_seperated_game_ids = ",".join(game_ids)
     thing_endpoint = BASE_URI + "thing?"
     parameters = f"id={comma_seperated_game_ids}&stats=1"
-    print(thing_endpoint + parameters)
     return requests.get(thing_endpoint + parameters)
 
 
@@ -53,11 +50,17 @@ class BoardgameXMLParser:
         self.type = self.board_game_element.get("type")
         self.id = self.board_game_element.get("id")
         self.title = self._get_attribute_from_element('name[@type="primary"]', "value")
-        self.description = html.unescape(
-            self.board_game_element.find("description").text
-        )
-        self.image = self.board_game_element.find("image").text
-        self.thumbnail = self.board_game_element.find("thumbnail").text
+
+        try:
+            self.description = html.unescape(
+                self.board_game_element.find("description").text
+            )
+        except TypeError:
+            self.description = None
+
+        self.image = self._get_optional_element("image")
+        self.thumbnail = self._get_optional_element("thumbnail")
+
         self.year_published = self._get_attribute_from_element("yearpublished", "value")
         self.min_players_from_creators = self._get_attribute_from_element(
             "minplayers", "value"
@@ -118,6 +121,12 @@ class BoardgameXMLParser:
                     suggested_player_counts_df_with_poll_result
                 )
             )
+
+    def _get_optional_element(self, element_name):
+        try:
+            return self.board_game_element.find(element_name).text
+        except AttributeError:
+            return None
 
     def _get_attribute_from_element(self, find_string, attribute_name):
         element = self.board_game_element.find(f"{find_string}")
@@ -230,7 +239,7 @@ def get_user_games_from_boardgamegeek(username):
         pass
     user_game_ids = get_game_ids_from_collection(collection_et)
     user_ratings = get_user_ratings_from_collection(collection_et)
-    return list(zip(user_game_ids, user_ratings))
+    return list(set(zip(user_game_ids, user_ratings)))
 
 
 def get_game_ids_not_currently_in_db(game_ids):
@@ -238,9 +247,22 @@ def get_game_ids_not_currently_in_db(game_ids):
 
 
 def get_general_game_data_from_boardgamegeek(game_ids):
-    games_request = get_games_from_game_ids(game_ids)
-    games_et = get_xml_string_from_response(games_request)
-    return [BoardgameXMLParser(game) for game in games_et]
+    print(len(game_ids), type(game_ids))
+    if len(game_ids) > 1000:
+        game_ids_in_sublists = [
+            game_ids[i : i + 1000] for i in range(0, len(game_ids), 1000)
+        ]
+        game_objects = []
+        for sublist in game_ids_in_sublists:
+            print("len", len(sublist), sublist)
+            games_request = get_games_from_game_ids(sublist)
+            games_et = get_xml_string_from_response(games_request)
+            game_objects += [BoardgameXMLParser(game) for game in games_et]
+        return game_objects
+    else:
+        games_request = get_games_from_game_ids(game_ids)
+        games_et = get_xml_string_from_response(games_request)
+        return [BoardgameXMLParser(game) for game in games_et]
 
 
 def add_new_users_collection_to_db(username):
@@ -256,20 +278,29 @@ def add_new_users_collection_to_db(username):
             break
 
     game_ids = [game_id for game_id, _ in user_games]
-    game_ids_not_already_in_database = get_game_ids_not_currently_in_db(game_ids)
-    if game_ids_not_already_in_database is not None:
-        general_game_data_for_user_games = get_general_game_data_from_boardgamegeek(
-            game_ids_not_already_in_database
-        )
-        insert_board_game_info(general_game_data_for_user_games)
+    unique_game_ids_not_already_in_database = prepare_set_of_games_not_already_in_db(
+        game_ids
+    )
+
+    insert_board_game_info(unique_game_ids_not_already_in_database)
     insert_user_into_database(username)
     insert_user_games_into_database(username, user_games)
 
 
-def insert_board_game_info(list_of_boardgame_objects):
+def prepare_set_of_games_not_already_in_db(game_ids):
+    game_ids_not_already_in_database = get_game_ids_not_currently_in_db(game_ids)
+    return list(set(game_ids_not_already_in_database))
+
+
+def insert_board_game_info(game_ids):
+    if game_ids is None:
+        return
+    general_game_data_for_user_games = get_general_game_data_from_boardgamegeek(
+        game_ids
+    )
     session = db_session.create_session()
     games_to_be_inserted = []
-    for bg in list_of_boardgame_objects:
+    for i, bg in enumerate(general_game_data_for_user_games):
         bg_id_already_in_database = (
             session.query(Game.bgg_game_id).filter(Game.bgg_game_id == bg.id).first()
             is not None
