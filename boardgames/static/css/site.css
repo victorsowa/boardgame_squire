@@ -19,6 +19,23 @@ body {
         margin-bottom: 30px;
     }
 
+.stats-banner {
+    width: 100%;
+    margin: 0px;
+    background-color: lightgray;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stats-banner-stat {
+    width: 33%;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+}
+
 .game-container {
     background-color: lightgray;
     margin-top: 5px;
@@ -37,11 +54,25 @@ body {
 }
 
 .allways-game-info-container {
-    margin-top: 10px;
+    width: 100%;
+    margin: 0px;
 }
 
 .allways-game-info {
-    margin-right: 5px;
+    vertical-align: text-top;
+    width: 22%;
+    margin: 0px;
+    margin-top: 10px;
+    padding: 0px;
+    display: inline-block;
+}
+
+.fa-star {
+    color: yellow;
+}
+
+.fa-thumbs-up {
+    color: green;
 }
 
 @media (min-width: 768px) {
@@ -89,4 +120,5 @@ body {
 
 .collection-list {
     background-color: white;
+    padding: 0px;
 }
