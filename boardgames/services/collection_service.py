@@ -76,6 +76,10 @@ class BoardgameXMLParser:
         self.bayes_average_rating = self._get_attribute_from_element(
             ".//bayesaverage", "value"
         )
+        self.average_weight = self._get_attribute_from_element(
+            ".//averageweight", "value"
+        )
+        self.weight_votes = self._get_attribute_from_element(".//numweights", "value")
         self.board_game_rank = self._get_attribute_from_element(
             './/rank[@name="boardgame"]', "value"
         )
@@ -324,6 +328,8 @@ def insert_board_game_info(game_ids):
                 average_rating=bg.average_rating,
                 bayes_average_rating=bg.bayes_average_rating,
                 board_game_rank=bg.board_game_rank,
+                average_weight=bg.average_weight,
+                weight_votes=bg.weight_votes,
                 designers=bg.designers,
                 mechanics=bg.mechanics,
                 categories=bg.categories,

@@ -46,6 +46,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
             Game.max_players,
             Game.min_playing_time,
             Game.max_playing_time,
+            Game.average_weight,
             Game.average_rating,
             Game.board_game_rank,
             Game.user_suggested_best_number_of_players,

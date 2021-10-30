@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Float
 
 from boardgames.data.modelbase import SqlAlchemyBase
 
@@ -19,6 +19,8 @@ class Game(SqlAlchemyBase):
     min_playing_time = Column(Integer, nullable=False)
     max_playing_time = Column(Integer, nullable=False)
     min_age = Column(Integer, nullable=False)
+    weight_votes = Column(Integer, nullable=False)
+    average_weight = Column(Float, nullable=False)
     average_rating = Column(Integer, nullable=False)
     bayes_average_rating = Column(Integer, nullable=False)
     board_game_rank = Column(Integer, nullable=False)
