@@ -14,6 +14,8 @@ GameCollectionFilters = namedtuple(
         "player_count_filter_type",
         "min_playing_time",
         "max_playing_time",
+        "min_weight",
+        "max_weight",
         "include_expansions",
     ],
 )
@@ -24,6 +26,8 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     player_count_filter_type="Possible",
     min_playing_time="Any",
     max_playing_time="Any",
+    min_weight="Any",
+    max_weight="Any",
     include_expansions=False,
 )
 
@@ -46,6 +50,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
             Game.max_players,
             Game.min_playing_time,
             Game.max_playing_time,
+            Game.average_weight,
             Game.average_rating,
             Game.board_game_rank,
             Game.user_suggested_best_number_of_players,
@@ -61,15 +66,44 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
 
 def apply_filters_to_get_games(query, filters):
     print("Applying filters")
-    filter_functions = [
+    special_filter_functions = [  # Special in that they are hard to generealize, they should however all take the paramenters query, filters
         apply_player_count_filter,
-        apply_min_playing_time_filter,
-        apply_max_playing_time_filter,
         apply_expansion_filter,
     ]
 
-    for filter_function in filter_functions:
+    for filter_function in special_filter_functions:
         query = filter_function(query, filters)
+
+    query = apply_size_comparison_filter(
+        query,
+        filters.min_playing_time,
+        Game.min_playing_time,
+        DEFAULT_COLLECTION_FILTERS.min_playing_time,
+        "greater or equal",
+    )
+    query = apply_size_comparison_filter(
+        query,
+        filters.max_playing_time,
+        Game.max_playing_time,
+        DEFAULT_COLLECTION_FILTERS.max_playing_time,
+        "less or equal",
+    )
+
+    query = apply_size_comparison_filter(
+        query,
+        filters.min_weight,
+        Game.average_weight,
+        DEFAULT_COLLECTION_FILTERS.min_weight,
+        "greater or equal",
+    )
+
+    query = apply_size_comparison_filter(
+        query,
+        filters.max_weight,
+        Game.average_weight,
+        DEFAULT_COLLECTION_FILTERS.max_weight,
+        "less or equal",
+    )
     return query
 
 
@@ -92,16 +126,15 @@ def apply_player_count_filter(query, filters):
         )
 
 
-def apply_min_playing_time_filter(query, filters):
-    if filters.min_playing_time == DEFAULT_COLLECTION_FILTERS.min_playing_time:
+def apply_size_comparison_filter(
+    query, filters_value, game_value, default_value, filter_type
+):
+    if filters_value == default_value:
         return query
-    return query.filter(Game.min_playing_time >= filters.min_playing_time)
-
-
-def apply_max_playing_time_filter(query, filters):
-    if filters.max_playing_time == DEFAULT_COLLECTION_FILTERS.max_playing_time:
-        return query
-    return query.filter(Game.max_playing_time <= filters.max_playing_time)
+    if filter_type == "greater or equal":
+        return query.filter(game_value >= filters_value)
+    if filter_type == "less or equal":
+        return query.filter(game_value <= filters_value)
 
 
 def apply_expansion_filter(query, filters):
