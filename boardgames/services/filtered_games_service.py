@@ -14,6 +14,8 @@ GameCollectionFilters = namedtuple(
         "player_count_filter_type",
         "min_playing_time",
         "max_playing_time",
+        "min_weight",
+        "max_weight",
         "include_expansions",
     ],
 )
@@ -24,6 +26,8 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     player_count_filter_type="Possible",
     min_playing_time="Any",
     max_playing_time="Any",
+    min_weight="Any",
+    max_weight="Any",
     include_expansions=False,
 )
 
@@ -82,6 +86,22 @@ def apply_filters_to_get_games(query, filters):
         filters.max_playing_time,
         Game.max_playing_time,
         DEFAULT_COLLECTION_FILTERS.max_playing_time,
+        "less or equal",
+    )
+
+    query = apply_size_comparison_filter(
+        query,
+        filters.min_weight,
+        Game.average_weight,
+        DEFAULT_COLLECTION_FILTERS.min_weight,
+        "greater or equal",
+    )
+
+    query = apply_size_comparison_filter(
+        query,
+        filters.max_weight,
+        Game.average_weight,
+        DEFAULT_COLLECTION_FILTERS.max_weight,
         "less or equal",
     )
     return query
