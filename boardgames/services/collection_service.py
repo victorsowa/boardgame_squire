@@ -213,13 +213,15 @@ def check_user_in_database(username):
 def insert_user_games_into_database(username, data_list):
     session = db_session.create_session()
     user_id_from_name = session.query(User.id).filter(User.name == username).first()
+    user_games_to_be_inserted = []
     for user_game in data_list:
         ug = UserGame(
             user_id=user_id_from_name[0],
             bgg_game_id=user_game[0],
             user_rating=user_game[1],
         )
-        session.add(ug)
+        user_games_to_be_inserted.append(ug)
+    session.bulk_save_objects(user_games_to_be_inserted)
 
     session.commit()
 
@@ -247,18 +249,22 @@ def get_user_games_from_boardgamegeek(username):
 
 
 def get_game_ids_not_currently_in_db(game_ids):
-    return game_ids  # ToDo this will always be checked anyhow
+    session = db_session.create_session()
+    games_already_in_db = (
+        session.query(Game.bgg_game_id).filter(Game.bgg_game_id.in_(game_ids)).all()
+    )
+    games_already_in_db = [game[0] for game in games_already_in_db]
+
+    return [game_id for game_id in game_ids if int(game_id) not in games_already_in_db]
 
 
 def get_general_game_data_from_boardgamegeek(game_ids):
-    print(len(game_ids), type(game_ids))
     if len(game_ids) > 1000:
         game_ids_in_sublists = [
             game_ids[i : i + 1000] for i in range(0, len(game_ids), 1000)
         ]
         game_objects = []
         for sublist in game_ids_in_sublists:
-            print("len", len(sublist), sublist)
             games_request = get_games_from_game_ids(sublist)
             games_et = get_xml_string_from_response(games_request)
             game_objects += [BoardgameXMLParser(game) for game in games_et]
@@ -305,42 +311,35 @@ def insert_board_game_info(game_ids):
     session = db_session.create_session()
     games_to_be_inserted = []
     for i, bg in enumerate(general_game_data_for_user_games):
-        bg_id_already_in_database = (
-            session.query(Game.bgg_game_id).filter(Game.bgg_game_id == bg.id).first()
-            is not None
+
+        bg_sql = Game(
+            bgg_game_id=bg.id,
+            title=bg.title,
+            type=bg.type,
+            description=bg.description,
+            year_published=bg.year_published,
+            image_url=bg.image,
+            thumbnail_url=bg.thumbnail,
+            min_players=bg.min_players_from_creators,
+            max_players=bg.max_players_from_creators,
+            playing_time=bg.playing_time,
+            min_playing_time=bg.min_playing_time,
+            max_playing_time=bg.max_playing_time,
+            min_age=bg.min_age,
+            average_rating=bg.average_rating,
+            bayes_average_rating=bg.bayes_average_rating,
+            board_game_rank=bg.board_game_rank,
+            average_weight=bg.average_weight,
+            weight_votes=bg.weight_votes,
+            designers=bg.designers,
+            mechanics=bg.mechanics,
+            categories=bg.categories,
+            user_suggested_best_number_of_players=bg.user_suggested_best_number_of_players,
+            user_suggested_recommended_number_of_players=bg.user_suggested_recommended_number_of_players,
+            user_suggested_recommended_not_best_number_of_players=bg.user_suggested_recommended_not_best_number_of_players,
         )
+        games_to_be_inserted.append(bg_sql)
 
-        if not bg_id_already_in_database:
-            bg_sql = Game(
-                bgg_game_id=bg.id,
-                title=bg.title,
-                type=bg.type,
-                description=bg.description,
-                year_published=bg.year_published,
-                image_url=bg.image,
-                thumbnail_url=bg.thumbnail,
-                min_players=bg.min_players_from_creators,
-                max_players=bg.max_players_from_creators,
-                playing_time=bg.playing_time,
-                min_playing_time=bg.min_playing_time,
-                max_playing_time=bg.max_playing_time,
-                min_age=bg.min_age,
-                average_rating=bg.average_rating,
-                bayes_average_rating=bg.bayes_average_rating,
-                board_game_rank=bg.board_game_rank,
-                average_weight=bg.average_weight,
-                weight_votes=bg.weight_votes,
-                designers=bg.designers,
-                mechanics=bg.mechanics,
-                categories=bg.categories,
-                user_suggested_best_number_of_players=bg.user_suggested_best_number_of_players,
-                user_suggested_recommended_number_of_players=bg.user_suggested_recommended_number_of_players,
-                user_suggested_recommended_not_best_number_of_players=bg.user_suggested_recommended_not_best_number_of_players,
-            )
-            games_to_be_inserted.append(bg_sql)
-        else:
-            print("game already in games.")
+    session.bulk_save_objects(games_to_be_inserted)
 
-        session.add_all(games_to_be_inserted)
-
-        session.commit()
+    session.commit()
