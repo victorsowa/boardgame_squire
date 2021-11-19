@@ -254,26 +254,17 @@ def get_game_ids_not_currently_in_db(game_ids):
         session.query(Game.bgg_game_id).filter(Game.bgg_game_id.in_(game_ids)).all()
     )
     games_already_in_db = [game[0] for game in games_already_in_db]
-    print("games already in db", games_already_in_db)
 
-    print(
-        len(
-            [game_id for game_id in game_ids if int(game_id) not in games_already_in_db]
-        ),
-        len(game_ids),
-    )
     return [game_id for game_id in game_ids if int(game_id) not in games_already_in_db]
 
 
 def get_general_game_data_from_boardgamegeek(game_ids):
-    print(len(game_ids), type(game_ids))
     if len(game_ids) > 1000:
         game_ids_in_sublists = [
             game_ids[i : i + 1000] for i in range(0, len(game_ids), 1000)
         ]
         game_objects = []
         for sublist in game_ids_in_sublists:
-            print("len", len(sublist), sublist)
             games_request = get_games_from_game_ids(sublist)
             games_et = get_xml_string_from_response(games_request)
             game_objects += [BoardgameXMLParser(game) for game in games_et]
