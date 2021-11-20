@@ -1,8 +1,8 @@
 <div class="container collection-list">
     <div class="stats-banner">
-        <div class="current-filter-num_games stats-banner-stat">Showing: LL</div>
-        <div class="base-games-num-games stats-banner-stat">Base game: LL</div>
-        <div class="expansion-num-games stats-banner-stat" >Expansions: LL</div>
+        <div class="current-filter-num_games stats-banner-stat">Showing: {{collection_stats.game_count | int}}</div>
+        <div class="base-games-num-games stats-banner-stat">Base game: {{collection_stats.base_game_count | int}}</div>
+        <div class="expansion-num-games stats-banner-stat" >Expansions: {{collection_stats.expansion_count | int}}</div>
     </div>
     {% for game in images %}
     <div class="row game-row">

@@ -2,7 +2,9 @@
 {% block main_content %}
     <div class="hero">
         <div class="hero-inner">
-            <h1> Boardgame collection </h1>
+            <h1 class="collection-name" hx-post="/user_collection/{{username}}/refresh"
+                hx-target=".games_list"
+                hx-trigger="click"> {{username}} Collection <i class="fas fa-sync"></i></h1>
         </div>
     </div>
     <div class="container filter-options">
@@ -13,19 +15,16 @@
                 <div class="col-sm-1"></div>
 
 
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-5">
                     <div class="player-count-multiselect">
                         <label for="Player Count">Player Count</label>
-                        <select hx-post="/user_collection/{{username}}"
+                        <input hx-post="/user_collection/{{username}}"
                                 hx-target=".games_list"
                                 hx-trigger="change"
-                                class="custom-select"
-                                name="player_count">
-                            <option selected>Any</option>
-                            {% for player_count in range(1, 12)%}
-                                <option value="{{player_count}}">{{player_count}}</option>
-                            {% endfor %}
-                        </select>
+                                class="custom-select player-count-input"
+                                name="player_count"
+                                type="number"
+                                min="1" max="100">
                     </div>
                     <div class="player-count-radio">
                         {% for player_count_filter_type in ['Possible', 'Recommended', 'Best'] %}
@@ -48,72 +47,56 @@
                     </div>
                 </div>
 
-                <div class="form-group col-sm-3">
-                    <label for="min_playing_time">Min Playing Time</label>
-                    <select hx-post="/user_collection/{{username}}"
+                <div class="form-group col-sm-5">
+                    <div class="inline-block-inputs">
+                        <label for="from-to-filter min_playing_time">Playing Time</label>
+                        <input hx-post="/user_collection/{{username}}"
                             hx-target=".games_list"
                             hx-trigger="change"
-                            class="custom-select"
-                            name="min_playing_time">
-                        <option selected>Any</option>
-                        {% for playing_time in range(15, 300, 15)%}
-                            <option value="{{playing_time}}">{{playing_time}}</option>
-                        {% endfor %}
-                    </select>
+                            class="number-input custom-select"
+                            name="min_playing_time"
+                            type="number"
+                            min="0" max="300" step=15 >
+                    </div><div class="inline-block-inputs seperator">-</div><div class="inline-block-inputs">
+                        <input hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class="number-input custom-select"
+                                name="max_playing_time"
+                                type="number"
+                                min="0" max="300" step=15>
+                    </div>
                 </div>
-                <div class="form-group col-sm-3">
-                    <label for="max_playing_time">Max Playing Time</label>
-                    <select hx-post="/user_collection/{{username}}"
-                            hx-target=".games_list"
-                            hx-trigger="change"
-                            class="custom-select"
-                            name="max_playing_time">
-                        <option selected>Any</option>
-                        {% for playing_time in range(15, 300, 15)%}
-                            <option value="{{playing_time}}">{{playing_time}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-
-
-
 
                 <div class="col-sm-1"></div>
             </div>
             <div class="row">
                 <div class="col-sm-1"></div>
-                <div class="form-group col-sm-5">
-                    <label for="min_weight">Min Weight</label>
-                    <select hx-post="/user_collection/{{username}}"
-                            hx-target=".games_list"
-                            hx-trigger="change"
-                            class="custom-select"
-                            name="min_weight">
-                        <option selected>Any</option>
-                        {% for weight in range(0, 6)%}
-                            <option value="{{weight}}">{{weight}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group col-sm-5">
-                    <label for="max_weight">Max Weight</label>
-                    <select hx-post="/user_collection/{{username}}"
-                            hx-target=".games_list"
-                            hx-trigger="change"
-                            class="custom-select"
-                            name="max_weight">
-                        <option selected>Any</option>
-                        {% for weight in range(0, 6)%}
-                            <option value="{{weight}}">{{weight}}</option>
-                        {% endfor %}
-                    </select>
+                <div class="from-to-filter form-group col-sm-5">
+                    <div class="inline-block-inputs">
+                        <label for="min_weight">Weight</label>
+                        <input hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class=" number-input custom-select"
+                                name="min_weight"
+                                type="number"
+                                min="0" max="4">
+                    </div><div class="inline-block-inputs seperator">-</div><div class="inline-block-inputs">
+                        <input hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class="number-input custom-select"
+                                name="max_weight"
+                                type="number"
+                                min="1" max="5">
+                    </div>
                 </div>
                 <div class="col-sm-1"></div>
             </div>
             <div class="row">
                 <div class="col-sm-1"></div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-6">
                     <div class="form-check mb-2">
                         <input hx-post="/user_collection/{{username}}"
                             hx-target=".games_list"
@@ -135,7 +118,7 @@
     </div>
 
     <div class="games_list">
-        {{ render_partial('shared/partials/games_list.html', images=images) }}
+        {{ render_partial('shared/partials/games_list.html', images=images, collection_stats=collection_stats) }}
     </div>
 
 {% endblock %}

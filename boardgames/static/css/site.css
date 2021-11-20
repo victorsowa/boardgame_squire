@@ -17,6 +17,7 @@ body {
     .hero h1 {
         font-size: 24px;
         margin-bottom: 30px;
+        cursor: pointer;
     }
 
 .stats-banner {
@@ -34,6 +35,7 @@ body {
     margin: 0px;
     padding: 0px;
     float: left;
+    text-align: center;
 }
 
 .game-container {
@@ -51,6 +53,10 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+input, label {
+    display: block;
 }
 
 .allways-game-info-container {
@@ -115,10 +121,23 @@ body {
     width: 100px;
 }
 
-
-
-
 .collection-list {
     background-color: white;
     padding: 0px;
+}
+
+.player-count-input {
+    width: 300px;
+}
+
+.number-input {
+    width: 100px;
+}
+
+.inline-block-inputs {
+    display: inline-block;
+}
+
+.seperator {
+    padding: 5px;
 }
