@@ -55,6 +55,10 @@ body {
     text-overflow: ellipsis;
 }
 
+input, label {
+    display: block;
+}
+
 .allways-game-info-container {
     width: 100%;
     margin: 0px;
@@ -117,10 +121,23 @@ body {
     width: 100px;
 }
 
-
-
-
 .collection-list {
     background-color: white;
     padding: 0px;
+}
+
+.player-count-input {
+    width: 300px;
+}
+
+.number-input {
+    width: 100px;
+}
+
+.inline-block-inputs {
+    display: inline-block;
+}
+
+.seperator {
+    padding: 5px;
 }
