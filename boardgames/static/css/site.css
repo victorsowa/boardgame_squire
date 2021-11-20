@@ -9,15 +9,19 @@ body {
     background-color: #006dad;
     color: white;
     font-size: 14;
-
+    margin: auto;
+    width: 50%;
     padding: 0px 0px;
     text-align: center;
 }
-
     .hero h1 {
         font-size: 24px;
         margin-bottom: 30px;
         cursor: pointer;
+    }
+    .hero form{
+        display: flex;
+        justify-content: center;
     }
 
 .stats-banner {
