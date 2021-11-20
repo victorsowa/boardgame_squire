@@ -20,6 +20,15 @@ GameCollectionFilters = namedtuple(
     ],
 )
 
+CollectionStats = namedtuple(
+    "CollectionStats",
+    [
+        "game_count",
+        "base_game_count",
+        "expansion_count",
+    ],
+)
+
 
 DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     player_count="Any",
@@ -44,6 +53,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
         session.query(
             Game.thumbnail_url,
             Game.title,
+            Game.type,
             Game.year_published,
             Game.description,
             Game.min_players,
@@ -142,3 +152,15 @@ def apply_expansion_filter(query, filters):
         return query.filter(Game.type != "boardgameexpansion")
     else:
         return query
+
+
+def get_collection_stats(games_query_result):
+    games = pd.DataFrame(games_query_result)
+    if games.shape[0] == 0:
+        return CollectionStats(0, 0, 0)
+
+    all_games = games.shape[0]
+    base_games = games[games["type"] != "boardgameexpansion"].shape[0]
+    expansions = games[games["type"] == "boardgameexpansion"].shape[0]
+
+    return CollectionStats(all_games, base_games, expansions)

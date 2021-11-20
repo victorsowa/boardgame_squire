@@ -2,7 +2,12 @@
 {% block main_content %}
     <div class="hero">
         <div class="hero-inner">
-            <h1> Boardgame collection </h1>
+            <h1> {{username}} Collection</h1>
+            <div class="refresh" hx-post="/user_collection/{{username}}/refresh"
+                hx-target=".games_list"
+                hx-trigger="click">
+                <i class="fas fa-sync"></i>
+            </div>
         </div>
     </div>
     <div class="container filter-options">
@@ -135,7 +140,7 @@
     </div>
 
     <div class="games_list">
-        {{ render_partial('shared/partials/games_list.html', images=images) }}
+        {{ render_partial('shared/partials/games_list.html', images=images, collection_stats=collection_stats) }}
     </div>
 
 {% endblock %}

@@ -51,18 +51,26 @@ def index_post():
 
 @app.route("/user_collection/<username>", methods=["GET"])
 def collection_get(username):
+    games = fgs.get_games(username)
+    collection_stats = fgs.get_collection_stats(games)
     return flask.render_template(
-        "user_collection.html", images=fgs.get_games(username), username=username
+        "user_collection.html",
+        images=games,
+        collection_stats=collection_stats,
+        username=username,
     )
 
 
 @app.route("/user_collection/<username>", methods=["POST"])
 def collection_post(username):
     filters = create_collection_filter(flask.request.form)
-    print(filters)
+    filtered_games = fgs.get_games(username, filters)
+    collection_stats = fgs.get_collection_stats(filtered_games)
 
     return flask.render_template(
-        "shared/partials/games_list.html", images=fgs.get_games(username, filters)
+        "shared/partials/games_list.html",
+        images=filtered_games,
+        collection_stats=collection_stats,
     )
 
 
