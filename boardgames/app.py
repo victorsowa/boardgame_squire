@@ -58,19 +58,32 @@ def collection_get(username):
 
 @app.route("/user_collection/<username>", methods=["POST"])
 def collection_post(username):
-    filters = fgs.GameCollectionFilters(
-        player_count=flask.request.form["player_count"],
-        player_count_filter_type=flask.request.form["player_count_filter_type"],
-        min_playing_time=flask.request.form["min_playing_time"],
-        max_playing_time=flask.request.form["max_playing_time"],
-        min_weight=flask.request.form["min_weight"],
-        max_weight=flask.request.form["max_weight"],
-        include_expansions=flask.request.form.get("include_expansions", False),
-    )
+    filters = create_collection_filter(flask.request.form)
     print(filters)
 
     return flask.render_template(
         "shared/partials/games_list.html", images=fgs.get_games(username, filters)
+    )
+
+
+@app.route("/user_collection/<username>/refresh", methods=["POST"])
+def refresh_user_collection(username):
+    add_new_users_collection_to_db(username, user_exists=True)
+    filters = create_collection_filter(flask.request.form)
+    return flask.render_template(
+        "shared/partials/games_list.html", images=fgs.get_games(username, filters)
+    )
+
+
+def create_collection_filter(form):
+    return fgs.GameCollectionFilters(
+        player_count=form["player_count"],
+        player_count_filter_type=form["player_count_filter_type"],
+        min_playing_time=form["min_playing_time"],
+        max_playing_time=form["max_playing_time"],
+        min_weight=form["min_weight"],
+        max_weight=form["max_weight"],
+        include_expansions=form.get("include_expansions", False),
     )
 
 
