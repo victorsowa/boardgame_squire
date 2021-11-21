@@ -124,6 +124,7 @@ select, label {
 .collection-list {
     background-color: white;
     padding: 0px;
+    padding-bottom: 5px;
 }
 
 .player-count-input {
@@ -140,4 +141,10 @@ select, label {
 
 .seperator {
     padding: 5px;
+}
+
+
+footer {
+    padding-top: 10px;
+    text-align: center;
 }
