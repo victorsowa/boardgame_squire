@@ -126,13 +126,45 @@ def apply_player_count_filter(query, filters):
         )
     if filters.player_count_filter_type == "Recommended":
         return query.filter(
-            Game.user_suggested_recommended_number_of_players.like(
-                f"%{filters.player_count}%"
+            (
+                Game.user_suggested_recommended_number_of_players.like(
+                    f"%|{filters.player_count}|%"
+                )
+            )
+            | (
+                Game.user_suggested_recommended_number_of_players.like(
+                    f"%|{filters.player_count}"
+                )
+            )
+            | (
+                Game.user_suggested_recommended_number_of_players.like(
+                    f"{filters.player_count}|%"
+                )
+            )
+            | (
+                Game.user_suggested_recommended_number_of_players
+                == f"{filters.player_count}"
             )
         )
+
     if filters.player_count_filter_type == "Best":
         return query.filter(
-            Game.user_suggested_best_number_of_players.like(f"%{filters.player_count}%")
+            (
+                Game.user_suggested_best_number_of_players.like(
+                    f"%|{filters.player_count}|%"
+                )
+            )
+            | (
+                Game.user_suggested_best_number_of_players.like(
+                    f"%|{filters.player_count}"
+                )
+            )
+            | (
+                Game.user_suggested_best_number_of_players.like(
+                    f"{filters.player_count}|%"
+                )
+            )
+            | (Game.user_suggested_best_number_of_players == f"{filters.player_count}")
         )
 
 
