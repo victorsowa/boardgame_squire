@@ -19,10 +19,6 @@ body {
         margin-bottom: 30px;
         cursor: pointer;
     }
-    .hero form{
-        display: flex;
-        justify-content: center;
-    }
 
 .stats-banner {
     width: 100%;
@@ -59,7 +55,7 @@ body {
     text-overflow: ellipsis;
 }
 
-input, label {
+select, label {
     display: block;
 }
 
@@ -128,6 +124,7 @@ input, label {
 .collection-list {
     background-color: white;
     padding: 0px;
+    padding-bottom: 5px;
 }
 
 .player-count-input {
@@ -138,10 +135,24 @@ input, label {
     width: 100px;
 }
 
+.sort-field {
+    width: 200px;
+}
+
+.sort-type {
+    width: 100px;
+}
+
 .inline-block-inputs {
     display: inline-block;
 }
 
 .seperator {
     padding: 5px;
+}
+
+
+footer {
+    padding-top: 10px;
+    text-align: center;
 }
