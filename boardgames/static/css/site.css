@@ -19,10 +19,6 @@ body {
         margin-bottom: 30px;
         cursor: pointer;
     }
-    .hero form{
-        display: flex;
-        justify-content: center;
-    }
 
 .stats-banner {
     width: 100%;
@@ -59,7 +55,7 @@ body {
     text-overflow: ellipsis;
 }
 
-input, label {
+select, label {
     display: block;
 }
 

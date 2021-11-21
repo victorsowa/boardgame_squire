@@ -31,12 +31,12 @@ CollectionStats = namedtuple(
 
 
 DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
-    player_count="",
+    player_count="Any",
     player_count_filter_type="Possible",
-    min_playing_time="",
-    max_playing_time="",
-    min_weight="",
-    max_weight="",
+    min_playing_time="Any",
+    max_playing_time="Any",
+    min_weight="Any",
+    max_weight="Any",
     include_expansions=False,
 )
 
