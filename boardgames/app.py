@@ -52,12 +52,15 @@ def index_post():
 @app.route("/user_collection/<username>", methods=["GET"])
 def collection_get(username):
     games = fgs.get_games(username)
+    sorted_games = fgs.sort_filtered_games(games, "Title", "asc")
     collection_stats = fgs.get_collection_stats(games)
+    sorting_options = fgs.SORTING_FIELDS.keys()
     return flask.render_template(
         "user_collection.html",
-        images=games,
+        images=sorted_games,
         collection_stats=collection_stats,
         username=username,
+        sorting_options=sorting_options,
     )
 
 
@@ -65,11 +68,14 @@ def collection_get(username):
 def collection_post(username):
     filters = create_collection_filter(flask.request.form)
     filtered_games = fgs.get_games(username, filters)
+    sorted_games = fgs.sort_filtered_games(
+        filtered_games, filters.sort_field, filters.sort_type
+    )
     collection_stats = fgs.get_collection_stats(filtered_games)
 
     return flask.render_template(
         "shared/partials/games_list.html",
-        images=filtered_games,
+        images=sorted_games,
         collection_stats=collection_stats,
     )
 
@@ -77,10 +83,7 @@ def collection_post(username):
 @app.route("/user_collection/<username>/refresh", methods=["POST"])
 def refresh_user_collection(username):
     add_new_users_collection_to_db(username, user_exists=True)
-    filters = create_collection_filter(flask.request.form)
-    return flask.render_template(
-        "shared/partials/games_list.html", images=fgs.get_games(username, filters)
-    )
+    return flask.redirect(f"/user_collection/{username}")
 
 
 def create_collection_filter(form):
@@ -92,6 +95,8 @@ def create_collection_filter(form):
         min_weight=form["min_weight"],
         max_weight=form["max_weight"],
         include_expansions=form.get("include_expansions", False),
+        sort_field=form["sort_field"],
+        sort_type=form["sort_type"],
     )
 
 

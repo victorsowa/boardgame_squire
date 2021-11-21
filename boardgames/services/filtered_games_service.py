@@ -17,8 +17,21 @@ GameCollectionFilters = namedtuple(
         "min_weight",
         "max_weight",
         "include_expansions",
+        "sort_field",
+        "sort_type",
     ],
 )
+
+# Name in frontend: name from database
+SORTING_FIELDS = {
+    "Min Playing Time": "min_playing_time",
+    "Max Playing Time": "max_playing_time",
+    "Weight": "average_weight",
+    "BGG rating": "average_rating",
+    "Year Published": "year_published",
+    "Title": "title",
+}
+
 
 CollectionStats = namedtuple(
     "CollectionStats",
@@ -38,6 +51,8 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     min_weight="Any",
     max_weight="Any",
     include_expansions=False,
+    sort_field="Title",
+    sort_type="asc",
 )
 
 
@@ -196,3 +211,17 @@ def get_collection_stats(games_query_result):
     expansions = games[games["type"] == "boardgameexpansion"].shape[0]
 
     return CollectionStats(all_games, base_games, expansions)
+
+
+def sort_filtered_games(filtered_games, field_to_sort_by, sort_type):
+    if len(filtered_games) == 0:
+        return filtered_games
+
+    if sort_type == "asc":
+        asc = True
+    elif sort_type == "desc":
+        asc = False
+    games = pd.DataFrame(filtered_games)
+    games.columns = filtered_games[0].keys()
+    sort_column_name = SORTING_FIELDS[field_to_sort_by]
+    return games.sort_values(by=sort_column_name, ascending=asc).itertuples(index=False)

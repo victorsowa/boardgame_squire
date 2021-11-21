@@ -135,6 +135,14 @@ select, label {
     width: 100px;
 }
 
+.sort-field {
+    width: 200px;
+}
+
+.sort-type {
+    width: 100px;
+}
+
 .inline-block-inputs {
     display: inline-block;
 }

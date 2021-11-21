@@ -8,13 +8,9 @@
         </div>
     </div>
     <div class="container filter-options">
-
-
         <form action="" method="POST">
             <div class="row">
                 <div class="col-sm-1"></div>
-
-
                 <div class="form-group col-sm-5">
                     <div class="player-count-multiselect">
                         <label for="Player Count">Player Count</label>
@@ -111,7 +107,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-1"></div>
-                <div class="form-group col-sm-6">
+                <div class="form-group col-sm-5">
                     <div class="form-check mb-2">
                         <input hx-post="/user_collection/{{username}}"
                             hx-target=".games_list"
@@ -125,11 +121,39 @@
                         </label>
                     </div>
                 </div>
+                <div class="form-group col-sm-5">
+                    <div class="sort_field-div inline-block-inputs">
+                        <label for="Sort Field">Sort Field</label>
+                        <select hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class="custom-select sort-field"
+                                name="sort_field">
+                            {% for field in sorting_options %}
+                                {% if field == "Title" %}
+                                    <option selected value="{{field}}">{{field}}</option>
+                                {% else %}
+                                    <option value="{{field}}">{{field}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div><!--
+                    --><div class="sort_type-div inline-block-inputs ">
+                        <label for="Sort Type">Sort Type</label>
+                        <select hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class="custom-select sort-type"
+                                name="sort_type">
+                            <option selected value="asc">asc</option>
+                            <option value="desc">desc</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-sm-1"></div>
             </div>
         </form>
 
-        </div>
     </div>
 
     <div class="games_list">
