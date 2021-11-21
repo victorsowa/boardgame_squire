@@ -188,11 +188,9 @@ def apply_expansion_filter(query, filters):
 
 def get_collection_stats(games_query_result):
     games = pd.DataFrame(games_query_result)
-    games.columns = games_query_result[0].keys()
-
     if games.shape[0] == 0:
         return CollectionStats(0, 0, 0)
-
+    games.columns = games_query_result[0].keys()
     all_games = games.shape[0]
     base_games = games[games["type"] != "boardgameexpansion"].shape[0]
     expansions = games[games["type"] == "boardgameexpansion"].shape[0]
