@@ -43,7 +43,7 @@ def index_get():
 
 @app.route("/", methods=["POST"])
 def index_post():
-    username = flask.request.form["username"]
+    username = flask.request.form["username"].lower()
     if not check_user_in_database(username):
         add_new_users_collection_to_db(username)
     return flask.redirect(f"/user_collection/{username}")
