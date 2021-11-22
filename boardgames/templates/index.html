@@ -3,9 +3,9 @@
     <div class="hero">
         <div class="hero-inner">
             <h1> Boardgame collection </h1>
-            <form action="/" method="POST">
+            <form id=submit-button action="/" method="POST">
                 <input class="center" type="username" name="username" placeholder="Boardgamegeek username" required>
-                <input class="center" type="submit" value="Get Collection">
+                <input name=submit-button class="center" type="submit" value="Get Collection" onclick=" this.form.submit(); this.disabled=true;">
                 </form>
         </div>
     </div>
