@@ -73,6 +73,12 @@ select, label {
     display: inline-block;
 }
 
+.expandable-game-info {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .fa-star {
     color: yellow;
 }

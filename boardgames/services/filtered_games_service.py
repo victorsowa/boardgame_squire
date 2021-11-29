@@ -16,6 +16,8 @@ GameCollectionFilters = namedtuple(
         "max_playing_time",
         "min_weight",
         "max_weight",
+        "mechanic",
+        "category",
         "include_expansions",
         "sort_field",
         "sort_type",
@@ -50,6 +52,8 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     max_playing_time="Any",
     min_weight="Any",
     max_weight="Any",
+    mechanic="Any",
+    category="Any",
     include_expansions=False,
     sort_field="Title",
     sort_type="asc",
@@ -67,6 +71,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
     base_query = (
         session.query(
             Game.thumbnail_url,
+            Game.bgg_game_id,
             Game.title,
             Game.type,
             Game.year_published,
@@ -75,6 +80,8 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
             Game.max_players,
             Game.min_playing_time,
             Game.max_playing_time,
+            Game.mechanics,
+            Game.categories,
             Game.average_weight,
             Game.average_rating,
             Game.board_game_rank,
@@ -129,7 +136,26 @@ def apply_filters_to_get_games(query, filters):
         DEFAULT_COLLECTION_FILTERS.max_weight,
         "less or equal",
     )
+
+    query = apply_filter_for_list_field(
+        query, Game.mechanics, DEFAULT_COLLECTION_FILTERS.mechanic, filters.mechanic
+    )
+    query = apply_filter_for_list_field(
+        query, Game.categories, DEFAULT_COLLECTION_FILTERS.category, filters.category
+    )
+
     return query
+
+
+def apply_filter_for_list_field(query, field, default_filter_value, value):
+    if value == default_filter_value:
+        return query
+    return query.filter(
+        (field.like(f"%|{value}|%"))
+        | (field.like(f"%|{value}"))
+        | (field.like(f"{value}|%"))
+        | (field == f"{value}")
+    )
 
 
 def apply_player_count_filter(query, filters):
@@ -140,46 +166,19 @@ def apply_player_count_filter(query, filters):
             Game.max_players >= filters.player_count
         )
     if filters.player_count_filter_type == "Recommended":
-        return query.filter(
-            (
-                Game.user_suggested_recommended_number_of_players.like(
-                    f"%|{filters.player_count}|%"
-                )
-            )
-            | (
-                Game.user_suggested_recommended_number_of_players.like(
-                    f"%|{filters.player_count}"
-                )
-            )
-            | (
-                Game.user_suggested_recommended_number_of_players.like(
-                    f"{filters.player_count}|%"
-                )
-            )
-            | (
-                Game.user_suggested_recommended_number_of_players
-                == f"{filters.player_count}"
-            )
+        return apply_filter_for_list_field(
+            query,
+            Game.user_suggested_recommended_number_of_players,
+            DEFAULT_COLLECTION_FILTERS.player_count,
+            filters.player_count,
         )
 
     if filters.player_count_filter_type == "Best":
-        return query.filter(
-            (
-                Game.user_suggested_best_number_of_players.like(
-                    f"%|{filters.player_count}|%"
-                )
-            )
-            | (
-                Game.user_suggested_best_number_of_players.like(
-                    f"%|{filters.player_count}"
-                )
-            )
-            | (
-                Game.user_suggested_best_number_of_players.like(
-                    f"{filters.player_count}|%"
-                )
-            )
-            | (Game.user_suggested_best_number_of_players == f"{filters.player_count}")
+        return apply_filter_for_list_field(
+            query,
+            Game.user_suggested_best_number_of_players,
+            DEFAULT_COLLECTION_FILTERS.player_count,
+            filters.player_count,
         )
 
 
@@ -225,3 +224,16 @@ def sort_filtered_games(filtered_games, field_to_sort_by, sort_type):
     games.columns = filtered_games[0].keys()
     sort_column_name = SORTING_FIELDS[field_to_sort_by]
     return games.sort_values(by=sort_column_name, ascending=asc).itertuples(index=False)
+
+
+def get_unique_from_sperated_pipe_seperatedcolumns(filtered_games, field):
+    lists_out_of_pipe_seperated = [game[field].split("|") for game in filtered_games]
+
+    unique_possible = set()
+
+    for _list in lists_out_of_pipe_seperated:
+        unique_possible.update(_list)
+    unique_possible = list(unique_possible)
+    unique_possible = [x for x in unique_possible if x.strip() != ""]
+    unique_possible.sort()
+    return unique_possible
