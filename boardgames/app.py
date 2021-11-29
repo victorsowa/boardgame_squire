@@ -55,12 +55,21 @@ def collection_get(username):
     sorted_games = fgs.sort_filtered_games(games, "Title", "asc")
     collection_stats = fgs.get_collection_stats(games)
     sorting_options = fgs.SORTING_FIELDS.keys()
+    possible_mechanics = fgs.get_unique_from_sperated_pipe_seperatedcolumns(
+        games, "mechanics"
+    )
+    possible_categories = fgs.get_unique_from_sperated_pipe_seperatedcolumns(
+        games, "categories"
+    )
+
     return flask.render_template(
         "user_collection.html",
         images=sorted_games,
         collection_stats=collection_stats,
         username=username,
         sorting_options=sorting_options,
+        possible_categories=possible_categories,
+        possible_mechanics=possible_mechanics,
     )
 
 
@@ -94,6 +103,8 @@ def create_collection_filter(form):
         max_playing_time=form["max_playing_time"],
         min_weight=form["min_weight"],
         max_weight=form["max_weight"],
+        category=form["category"],
+        mechanic=form["mechanic"],
         include_expansions=form.get("include_expansions", False),
         sort_field=form["sort_field"],
         sort_type=form["sort_type"],

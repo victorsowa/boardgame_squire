@@ -103,6 +103,41 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group col-sm-5">
+                    <div class="categories-multiselect">
+                        <label for="category">Category</label>
+                        <select hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class="custom-select"
+                                name="category">
+                            <option selected>Any</option>
+                            {% for category in possible_categories%}
+                                <option value="{{category}}">{{category}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="form-group col-sm-5">
+                    <div class="mechanic-multiselect">
+                        <label for="mechanic">Mechanic</label>
+                        <select hx-post="/user_collection/{{username}}"
+                                hx-target=".games_list"
+                                hx-trigger="change"
+                                class="custom-select"
+                                name="mechanic">
+                            <option selected>Any</option>
+                            {% for mechanic in possible_mechanics%}
+                                <option value="{{mechanic}}">{{mechanic}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-sm-5"></div>
                 <div class="col-sm-1"></div>
             </div>
             <div class="row">

@@ -31,6 +31,10 @@
                                 </div>
                             </span>
                             <span class="allways-game-info">
+                                <div class="weight game-info-item"><i class="fas fa-weight-hanging"></i> {{"%.2f"|format(game.average_weight)}}</div>
+                                <div class="bgg-rating game-info-item"><i class="fas fa-star-half-alt"></i> {{"%.2f"|format(game.average_rating)}}</div>
+                            </span>
+                            <span class="allways-game-info">
                                 <div class="playing-time-value game-info-item">
                                     <i class="fas fa-clock"></i>
                                     {% if game.min_playing_time !=  game.max_playing_time%}
@@ -39,9 +43,6 @@
                                         {{game.min_playing_time}}
                                     {% endif %}
                                 </div>
-                            </span>
-                            <span class="allways-game-info">
-                                <div class="weight game-info-item"><i class="fas fa-weight-hanging"></i> {{"%.2f"|format(game.average_weight)}}</div>
                             </span>
                             <div class="collapse" id="exp-{{game.bgg_game_id}}">
                                 <div class="expandable-game-info">
@@ -52,7 +53,6 @@
                                 </div>
                             </div>
                         </div>
-
                 </div>
             </div>
         </div>
