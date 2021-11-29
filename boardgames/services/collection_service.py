@@ -160,6 +160,7 @@ def get_general_game_data_from_boardgamegeek(game_ids):
 
 
 def add_new_users_collection_to_db(username, user_exists=False):
+    username = username.lower()
     num_tries = 5
     for try_ in range(num_tries):
         user_games = get_user_games_from_boardgamegeek(username)
