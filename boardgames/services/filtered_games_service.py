@@ -67,6 +67,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
     base_query = (
         session.query(
             Game.thumbnail_url,
+            Game.bgg_game_id,
             Game.title,
             Game.type,
             Game.year_published,
@@ -75,6 +76,8 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
             Game.max_players,
             Game.min_playing_time,
             Game.max_playing_time,
+            Game.mechanics,
+            Game.categories,
             Game.average_weight,
             Game.average_rating,
             Game.board_game_rank,
