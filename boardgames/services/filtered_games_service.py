@@ -18,6 +18,7 @@ GameCollectionFilters = namedtuple(
         "max_weight",
         "mechanic",
         "category",
+        "designer",
         "include_expansions",
         "sort_field",
         "sort_type",
@@ -53,6 +54,7 @@ DEFAULT_COLLECTION_FILTERS = GameCollectionFilters(
     min_weight="Any",
     max_weight="Any",
     mechanic="Any",
+    designer="Any",
     category="Any",
     include_expansions=False,
     sort_field="Title",
@@ -76,6 +78,7 @@ def get_games(username, filters=DEFAULT_COLLECTION_FILTERS):
             Game.type,
             Game.year_published,
             Game.description,
+            Game.designers,
             Game.min_players,
             Game.max_players,
             Game.min_playing_time,
@@ -143,7 +146,9 @@ def apply_filters_to_get_games(query, filters):
     query = apply_filter_for_list_field(
         query, Game.categories, DEFAULT_COLLECTION_FILTERS.category, filters.category
     )
-
+    query = apply_filter_for_list_field(
+        query, Game.designers, DEFAULT_COLLECTION_FILTERS.designer, filters.designer
+    )
     return query
 
 

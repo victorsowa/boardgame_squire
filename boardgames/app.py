@@ -61,6 +61,9 @@ def collection_get(username):
     possible_categories = fgs.get_unique_from_sperated_pipe_seperatedcolumns(
         games, "categories"
     )
+    possible_designers = fgs.get_unique_from_sperated_pipe_seperatedcolumns(
+        games, "designers"
+    )
 
     return flask.render_template(
         "user_collection.html",
@@ -70,6 +73,7 @@ def collection_get(username):
         sorting_options=sorting_options,
         possible_categories=possible_categories,
         possible_mechanics=possible_mechanics,
+        possible_designers=possible_designers,
     )
 
 
@@ -105,6 +109,7 @@ def create_collection_filter(form):
         max_weight=form["max_weight"],
         category=form["category"],
         mechanic=form["mechanic"],
+        designer=form["designer"],
         include_expansions=form.get("include_expansions", False),
         sort_field=form["sort_field"],
         sort_type=form["sort_type"],
