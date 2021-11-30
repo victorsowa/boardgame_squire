@@ -51,6 +51,17 @@
                                 <div class="expandable-game-info">
                                     <i class="fas fa-wrench"></i> {{game.mechanics | replace('|', ', ')}}
                                 </div>
+                                <div class="expandable-game-info">
+                                    <i class="fas fa-paint-brush"></i> {{game.designers | replace('|', ', ')}}
+                                </div>
+                                <div class="expandable-game-info">
+                                    <a href="https://boardgamegeek.com/boardgame/{{game.bgg_game_id}}/{{game.title}}"><i class="fas fa-link"></i> Link to boardgamegeek</a>
+                                </div>
+                                {% autoescape false %}
+                                    <div class="expandable-game-info">
+                                        <i class="fas fa-info"></i> {{game.description | replace("\n", "<br>")}}
+                                    </div>
+                                {% endautoescape %}
                             </div>
                         </div>
                 </div>
