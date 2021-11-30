@@ -2,9 +2,7 @@
 {% block main_content %}
     <div class="hero">
         <div class="hero-inner">
-            <h1 class="collection-name" hx-post="/user_collection/{{username}}/refresh"
-                hx-target=".games_list"
-                hx-trigger="click"> {{username}} Collection <i class="fas fa-sync"></i></h1>
+            <h1 class="collection-name"> {{username}} Collection <a href="/user_collection/{{username}}/refresh"> <i class="fas fa-sync"></i></a></h1>
         </div>
     </div>
     <div class="container filter-options">

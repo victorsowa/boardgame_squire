@@ -89,7 +89,7 @@ def collection_post(username):
     )
 
 
-@app.route("/user_collection/<username>/refresh", methods=["POST"])
+@app.route("/user_collection/<username>/refresh", methods=["GET"])
 def refresh_user_collection(username):
     add_new_users_collection_to_db(username, user_exists=True)
     return flask.redirect(f"/user_collection/{username}")
