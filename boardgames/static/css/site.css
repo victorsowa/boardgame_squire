@@ -16,9 +16,14 @@ body {
 }
     .hero h1 {
         font-size: 24px;
+        margin-top: 30px;
         margin-bottom: 30px;
         cursor: pointer;
     }
+
+.index-page-text {
+    text-align: left;
+}
 
 .stats-banner {
     width: 100%;
@@ -36,6 +41,14 @@ body {
     padding: 0px;
     float: left;
     text-align: center;
+}
+
+.error-text {
+    text-align: left;
+}
+
+.index-page-text {
+    margin-bottom: 20px;
 }
 
 .game-container {
