@@ -38,6 +38,14 @@ body {
     text-align: center;
 }
 
+.error-text {
+    text-align: left;
+}
+
+.index-page-text {
+    margin-bottom: 20px;
+}
+
 .game-container {
     background-color: lightgray;
     margin-top: 5px;

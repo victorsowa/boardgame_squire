@@ -36,6 +36,11 @@ def setup_db():
     db_session.global_init(db_file)
 
 
+@app.errorhandler(500)
+def server_error(e):
+    return flask.render_template("error_page.html")
+
+
 @app.route("/", methods=["GET"])
 def index_get():
     return flask.render_template("index.html")
