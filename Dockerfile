@@ -16,8 +16,6 @@ FROM python:3.9-slim
 RUN apt-get clean \
     && apt-get -y update
 
-RUN apt-get -y install nginx
-
 COPY . /srv/boardgames
 WORKDIR /srv/boardgames/boardgames
 
@@ -25,6 +23,5 @@ RUN chown www-data db
 
 COPY --from=builder /install /usr/local
 
-COPY nginx.conf /etc/nginx
 RUN chmod +x ./start.sh
 CMD ["./start.sh"]
