@@ -5,4 +5,8 @@ __pycache__/
 *.db
 *.sqlite
 
+data/
+
 .ipynb_checkpoints/
+
+certbot/
