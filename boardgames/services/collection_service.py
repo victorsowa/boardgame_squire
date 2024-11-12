@@ -143,9 +143,10 @@ def remove_user_games_in_database(username, user_game_ids_to_remove):
 
 
 def get_general_game_data_from_boardgamegeek(game_ids):
-    if len(game_ids) > 1000:
+    max_items_to_get = 20 # limitation in bgg, how many items to get per api call.
+    if len(game_ids) > max_items_to_get:
         game_ids_in_sublists = [
-            game_ids[i : i + 1000] for i in range(0, len(game_ids), 1000)
+            game_ids[i : i + max_items_to_get] for i in range(0, len(game_ids), max_items_to_get)
         ]
         game_objects = []
         for sublist in game_ids_in_sublists:

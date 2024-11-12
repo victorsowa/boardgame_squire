@@ -1,2 +1,2 @@
-#!/usr/bin/env bash
+#!/bin/bash
 gunicorn --bind 0.0.0.0:3031 wsgi:app
